@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5000:5000"
+  migration:
+    image: postgres:latest
+    restart: on-failure
+    network_mode: service:db
+    depends_on:
+      - db
+    entrypoint:
+      - "/bin/bash"
+      - "-e"
+      - "-c"
+      - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql -f db/data.sql"
+    volumes:
+      - "./db/:/tmp/db"
+  postgraphile:
+    image: graphile/postgraphile:latest
+    restart: unless-stopped
+    network_mode: service:db
+    depends_on:
+      - db
+    environment:
+      PGPASSWORD: postgres
+      PGUSER: postgres
+      PGDATABASE: postgres
+      PGHOST: localhost
+    command:
+      [
+        "--enhance-graphiql",
+        "--allow-explain",
+        "--port",
+        "5000",
+        "--schema",
+        "public",
+        "--watch",
+      ]
