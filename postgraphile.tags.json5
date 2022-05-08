@@ -1,0 +1,17 @@
+{
+  version: 1,
+  config: {
+    class: {
+      writer: {
+        description: "Ein Author auf unserem Blog",
+        attribute: {
+          password: {
+            tags: {
+              omit: "create,read,update,delete,all,many",
+            },
+          },
+        },
+      },
+    },
+  },
+}

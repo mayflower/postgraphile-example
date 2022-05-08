@@ -1,5 +1,6 @@
-INSERT INTO Writer (name, surname)
-VALUES ('Emanuel', 'Vollmer');
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+INSERT INTO Writer (name, surname, password) VALUES ('Emanuel', 'Vollmer', crypt('superSecret', gen_salt('bf', 8)));
+
 INSERT INTO Blogpost (title, content, blogpost_type, writer_id)
 VALUES (
         'Graphql',
