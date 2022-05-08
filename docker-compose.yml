@@ -21,7 +21,7 @@ services:
       - "/bin/bash"
       - "-e"
       - "-c"
-      - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql -f db/data.sql"
+      - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql -f db/data.sql -f db/functions.sql"
     volumes:
       - "./db/:/tmp/db"
   postgraphile:
