@@ -25,7 +25,9 @@ services:
     volumes:
       - "./db/:/tmp/db"
   postgraphile:
-    image: graphile/postgraphile:latest
+    build: 
+      context: .
+      dockerfile: Postgraphile.Dockerfile
     restart: unless-stopped
     network_mode: service:db
     depends_on:
@@ -46,4 +48,6 @@ services:
         "--schema",
         "public",
         "--watch",
+        "--append-plugins",
+        "postgraphile-plugin-connection-filter",
       ]
