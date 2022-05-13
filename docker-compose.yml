@@ -11,6 +11,7 @@ services:
     ports:
       - "5000:5000"
       - "127.0.0.1:5432:5432"
+
   migration:
     image: postgres:latest
     restart: on-failure
@@ -24,6 +25,7 @@ services:
       - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql -f db/data.sql -f db/functions.sql"
     volumes:
       - "./db/:/tmp/db"
+
   postgraphile:
     build: 
       context: .
@@ -36,18 +38,4 @@ services:
       PGPASSWORD: postgres
       PGUSER: postgres
       PGDATABASE: postgres
-      PGHOST: localhost
-    volumes:
-      - "./postgraphile.tags.json5:/postgraphile/postgraphile.tags.json5"
-    command:
-      [
-        "--enhance-graphiql",
-        "--allow-explain",
-        "--port",
-        "5000",
-        "--schema",
-        "public",
-        "--watch",
-        "--append-plugins",
-        "postgraphile-plugin-connection-filter",
-      ]
+      PGHOST: db
