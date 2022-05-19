@@ -1,6 +1,7 @@
 import * as http from 'http';
 import { postgraphile } from 'postgraphile';
-import PostGraphileConnectionFilterPlugin  from 'postgraphile-plugin-connection-filter'; 'postgraphile-plugin-connection-filter';
+import PostGraphileConnectionFilterPlugin  from 'postgraphile-plugin-connection-filter';
+import BlogPostTitleImagePlugin from './BlogPostTitleImagePlugin';
 
 
 
@@ -17,6 +18,6 @@ http.createServer(
         graphiql: true,
         enhanceGraphiql: true,
         appendPlugins: 
-            [PostGraphileConnectionFilterPlugin]
+            [PostGraphileConnectionFilterPlugin, BlogPostTitleImagePlugin]
     })
 ).listen(5000);

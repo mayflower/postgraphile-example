@@ -39,3 +39,4 @@ services:
       PGUSER: postgres
       PGDATABASE: postgres
       PGHOST: db
+      CAT_API_KEY: '50950c25-8707-4c24-a97e-07c2fc188249'
