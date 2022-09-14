@@ -1,13 +1,19 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE ROLE graphile LOGIN PASSWORD 'graphile';
+
 DROP TABLE IF EXISTS Writer CASCADE;
 DROP TABLE IF EXISTS Blogpost CASCADE;
 
-DROP TYPE BLOGPOST_ENUM;
+DROP TYPE IF EXISTS BLOGPOST_ENUM;
 CREATE TYPE BLOGPOST_ENUM AS ENUM ('Technical', 'Agile');
+
 CREATE TABLE Writer
 (
     id       SERIAL PRIMARY KEY,
     name     TEXT NOT NULL,
     surname  TEXT NOT NULL,
+    email    TEXT NOT NULL UNIQUE CHECK (email ~* '^.+@.+\..+$'),
     nickname TEXT,
     password TEXT NOT NULL
 );
@@ -26,3 +32,9 @@ CREATE TABLE Blogpost
     writer_id     SERIAL REFERENCES Writer (id)
 );
 
+CREATE TYPE jwt_token as
+(
+    role      text,
+    writer_id integer,
+    exp       bigint
+);

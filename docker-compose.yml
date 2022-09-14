@@ -22,7 +22,7 @@ services:
       - "/bin/bash"
       - "-e"
       - "-c"
-      - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql -f db/data.sql -f db/functions.sql"
+      - "sleep 4 && cd /tmp && psql -h localhost -U postgres -f db/schema.sql  -f db/functions.sql -f db/data.sql -f db/grants.sql"
     volumes:
       - "./db/:/tmp/db"
 
@@ -34,9 +34,10 @@ services:
     network_mode: service:db
     depends_on:
       - db
+      - migration
     environment:
-      PGPASSWORD: postgres
-      PGUSER: postgres
+      PGPASSWORD: graphile
+      PGUSER: graphile
       PGDATABASE: postgres
       PGHOST: db
       CAT_API_KEY: '50950c25-8707-4c24-a97e-07c2fc188249'
